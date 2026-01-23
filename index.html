@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🏝️ The Island - Community Skills Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <span class="island-icon">🏝️</span>
+          <h1>The Island Community</h1>
+        </div>
+        <div class="nav-links">
+          <a href="#overview" class="nav-link active" data-section="overview"
+            >Overview</a
+          >
+          <a href="#heatmap" class="nav-link" data-section="heatmap">Heatmap</a>
+          <a href="#profiles" class="nav-link" data-section="profiles"
+            >Profiles</a
+          >
+          <a href="#teams" class="nav-link" data-section="teams"
+            >Team Builder</a
+          >
+          <a href="#gaps" class="nav-link" data-section="gaps">Gap Analysis</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h2 class="hero-title">Community Skills & Interests Dashboard</h2>
+        <p class="hero-subtitle">
+          Explore talents, build teams, and strengthen our community
+        </p>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value" id="totalMembers">--</div>
+            <div class="stat-label">Community Members</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-value" id="topCategory">--</div>
+            <div class="stat-label">Top Interest</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-value" id="criticalGaps">--</div>
+            <div class="stat-label">Critical Gaps</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Overview Section -->
+        <section id="overview" class="content-section active">
+          <h2 class="section-title">📊 Community Overview</h2>
+
+          <div class="chart-container">
+            <div id="categoryDistribution"></div>
+          </div>
+
+          <div class="insights-grid">
+            <div class="insight-card">
+              <h3>🔥 Top Strengths</h3>
+              <ul id="topStrengths"></ul>
+            </div>
+            <div class="insight-card">
+              <h3>❄️ Areas Needing Attention</h3>
+              <ul id="weakAreas"></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Heatmap Section -->
+        <section id="heatmap" class="content-section">
+          <h2 class="section-title">🗺️ Skills Heatmap</h2>
+          <p class="section-description">
+            Interactive view of all members across skill categories
+          </p>
+
+          <div class="chart-container">
+            <div id="heatmapChart"></div>
+          </div>
+        </section>
+
+        <!-- Profiles Section -->
+        <section id="profiles" class="content-section">
+          <h2 class="section-title">👤 Member Profiles</h2>
+
+          <div class="search-bar">
+            <input
+              type="text"
+              id="memberSearch"
+              placeholder="🔍 Search members by name..."
+            />
+          </div>
+
+          <div class="profiles-grid" id="profilesGrid"></div>
+
+          <!-- Profile Modal -->
+          <div id="profileModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2 id="modalMemberName"></h2>
+              <div id="modalRadarChart"></div>
+              <div class="profile-details">
+                <div class="detail-section">
+                  <h3>Top Strengths</h3>
+                  <ul id="modalStrengths"></ul>
+                </div>
+                <div class="detail-section">
+                  <h3>Least Preferred</h3>
+                  <ul id="modalWeaknesses"></ul>
+                </div>
+              </div>
+              <button class="btn-primary" id="addToTeamBtn">
+                Add to Team Builder
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Team Builder Section -->
+        <section id="teams" class="content-section">
+          <h2 class="section-title">👥 Team Builder</h2>
+          <p class="section-description">Build and analyze team compositions</p>
+
+          <div class="team-builder-container">
+            <div class="team-members-panel">
+              <h3>Available Members</h3>
+              <div id="availableMembers" class="members-list"></div>
+            </div>
+
+            <div class="team-composition-panel">
+              <h3>Your Team</h3>
+              <div id="teamMembers" class="team-list"></div>
+
+              <div class="team-actions">
+                <button class="btn-secondary" id="clearTeam">Clear Team</button>
+                <button class="btn-primary" id="exportTeam">Export Team</button>
+              </div>
+
+              <div class="team-coverage" id="teamCoverage"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Gap Analysis Section -->
+        <section id="gaps" class="content-section">
+          <h2 class="section-title">📉 Gap Analysis</h2>
+          <p class="section-description">
+            Identify skill areas that need more volunteers
+          </p>
+
+          <div class="gap-analysis-grid" id="gapAnalysisGrid"></div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>
+          🏝️ The Island Community Dashboard | Built with ❤️ for our community
+        </p>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
