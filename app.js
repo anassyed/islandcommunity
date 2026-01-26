@@ -7,7 +7,7 @@ let currentTeam = [];
 
 // ===== CATEGORIES =====
 const categories = [
-    'Operational/Scribe', 'Outdoor', 'Kids Activities', 'Physical/Sports',
+    'Operational', 'Outdoor', 'Kids Activities', 'Physical/Sports',
     'Educational', 'Social', 'Community Service', 'Spiritual',
     'Leadership/Strategy', 'Artisan/Engineer', 'Arts & Culture', 'Economy/Resource'
 ];
@@ -27,7 +27,7 @@ async function loadData() {
         const scoresResponse = await fetch('community_scores.csv');
         const scoresText = await scoresResponse.text();
         const scoresParsed = Papa.parse(scoresText, { header: true, skipEmptyLines: true });
-        scoresData = scoresParsed.data.filter(row => row.Name && row.Name.trim() !== '');
+        scoresData = scoresParsed.data.filter(row => row.Name && row.Name.trim() !== '' && row.Name !== 'Zubair');
         
         // Load gap analysis
         const gapResponse = await fetch('gap_analysis.csv');
@@ -163,21 +163,25 @@ function renderProfiles() {
     const searchInput = document.getElementById('memberSearch');
     
     function displayProfiles(filter = '') {
+        // Filter out Zubair and apply search filter
         const filtered = scoresData.filter(member => 
-            member.Name.toLowerCase().includes(filter.toLowerCase())
+            member.Name.toLowerCase().includes(filter.toLowerCase()) &&
+            member.Name !== 'Zubair'
         );
         
-        grid.innerHTML = filtered.map(member => {
+        grid.innerHTML = filtered.map((member, index) => {
             const scores = categories.map(cat => ({
                 category: cat,
                 score: parseInt(member[cat]) || 0
             })).sort((a, b) => b.score - a.score);
             
             const topSkills = scores.slice(0, 3);
+            const chartId = `radar-${index}-${member.Name.replace(/\s+/g, '')}`;
             
             return `
                 <div class="profile-card" onclick="showProfile('${member.Name}')">
                     <div class="profile-name">${member.Name}</div>
+                    <div class="profile-radar" id="${chartId}"></div>
                     <div class="profile-skills">
                         <strong>Top Skills:</strong>
                         <ul class="profile-skills-list">
@@ -192,6 +196,44 @@ function renderProfiles() {
                 </div>
             `;
         }).join('');
+        
+        // Render mini radar charts for each profile
+        filtered.forEach((member, index) => {
+            const chartId = `radar-${index}-${member.Name.replace(/\s+/g, '')}`;
+            const scores = categories.map(cat => parseInt(member[cat]) || 0);
+            
+            const trace = {
+                r: scores,
+                theta: categories.map(c => c.substring(0, 8)), // Shortened labels
+                fill: 'toself',
+                type: 'scatterpolar',
+                line: { color: '#00d4ff', width: 1 },
+                fillcolor: 'rgba(0, 212, 255, 0.3)'
+            };
+            
+            const layout = {
+                polar: {
+                    radialaxis: {
+                        visible: false,
+                        range: [-5, 10]
+                    },
+                    angularaxis: {
+                        visible: false
+                    }
+                },
+                showlegend: false,
+                margin: { l: 5, r: 5, t: 5, b: 5 },
+                width: 140,
+                height: 140,
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)'
+            };
+            
+            Plotly.newPlot(chartId, [trace], layout, {
+                responsive: false,
+                displayModeBar: false
+            });
+        });
     }
     
     displayProfiles();

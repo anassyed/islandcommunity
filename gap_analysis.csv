@@ -1,13 +1,13 @@
 Category,Interested Members,Highly Interested,Avg Score
 Arts & Culture,0,0,0.0
 Economy/Resource,0,0,0.0
-Physical/Sports,3,0,-0.4666666666666667
-Kids Activities,5,1,-0.2
-Community Service,5,2,0.13333333333333333
-Artisan/Engineer,5,2,-0.06666666666666667
-Operational/Scribe,6,2,0.5333333333333333
-Leadership/Strategy,6,3,1.2
-Outdoor,7,4,1.1333333333333333
-Spiritual,10,4,3.066666666666667
-Educational,11,6,2.8
-Social,11,7,1.8666666666666667
+Physical/Sports,4,1,-0.21052631578947367
+Outdoor,7,2,0.8421052631578947
+Kids Activities,7,2,0.0
+Community Service,7,3,0.3157894736842105
+Artisan/Engineer,7,3,0.0
+Operational,8,3,0.5789473684210527
+Leadership/Strategy,9,4,1.5263157894736843
+Spiritual,12,6,2.736842105263158
+Social,13,7,1.368421052631579
+Educational,14,9,2.789473684210526

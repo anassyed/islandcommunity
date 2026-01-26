@@ -319,18 +319,22 @@ body {
 /* ===== PROFILES GRID ===== */
 .profiles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2.5rem;
+  padding-top: 80px;
 }
 
 .profile-card {
   background: var(--bg-card);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 1.5rem;
+  padding-top: 90px;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  margin-top: 60px;
 }
 
 .profile-card:hover {
@@ -339,11 +343,29 @@ body {
   border-color: rgba(0, 212, 255, 0.3);
 }
 
+.profile-radar {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 140px;
+  background: var(--bg-secondary);
+  border-radius: 50%;
+  border: 3px solid var(--accent-cyan);
+  box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .profile-name {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
   margin-bottom: 1rem;
   color: var(--accent-cyan);
+  text-align: center;
 }
 
 .profile-skills {
