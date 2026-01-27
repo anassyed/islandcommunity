@@ -319,12 +319,6 @@ function showProfile(memberName) {
         `<li>${s.category}: <strong>${s.score > 0 ? '+' : ''}${s.score}</strong></li>`
     ).join('');
     
-    // Add to team button
-    document.getElementById('addToTeamBtn').onclick = () => {
-        addToTeam(memberName);
-        modal.style.display = 'none';
-    };
-    
     modal.style.display = 'block';
 }
 
