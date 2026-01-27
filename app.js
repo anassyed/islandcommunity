@@ -1,3 +1,27 @@
+// ===== PASSWORD PROTECTION =====
+const SITE_PASSWORD = 'hadaf2026';
+
+function checkPassword() {
+    const input = document.getElementById('passwordInput');
+    const error = document.getElementById('passwordError');
+    
+    if (input.value === SITE_PASSWORD) {
+        document.getElementById('passwordOverlay').classList.add('hidden');
+        sessionStorage.setItem('authenticated', 'true');
+    } else {
+        error.textContent = 'Incorrect password. Please try again.';
+        input.value = '';
+        input.focus();
+    }
+}
+
+// Check if already authenticated this session
+document.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem('authenticated') === 'true') {
+        document.getElementById('passwordOverlay').classList.add('hidden');
+    }
+});
+
 // ===== GLOBAL STATE =====
 let communityData = [];
 let scoresData = [];
@@ -17,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
     setupNavigation();
     setupModalHandlers();
-    setupTeamBuilder();
 });
 
 // ===== DATA LOADING =====
@@ -41,7 +64,7 @@ async function loadData() {
         renderHeatmap();
         renderProfiles();
         renderGapAnalysis();
-        renderAvailableMembers();
+        renderTopStrengths();
         
     } catch (error) {
         console.error('Error loading data:', error);
@@ -117,12 +140,13 @@ function renderOverview() {
     const topStrengthsHTML = sorted.slice(0, 5).map(cat => 
         `<li><span>${cat.category}</span><span class="skill-score">+${cat.score.toFixed(2)}</span></li>`
     ).join('');
-    document.getElementById('topStrengths').innerHTML = topStrengthsHTML;
-    
-    const weakAreasHTML = sorted.slice(-5).reverse().map(cat => 
-        `<li><span>${cat.category}</span><span style="color: #f472b6">${cat.score.toFixed(2)}</span></li>`
-    ).join('');
-    document.getElementById('weakAreas').innerHTML = weakAreasHTML;
+    const topStrengthsEl = document.getElementById('topStrengths');
+    if (topStrengthsEl) topStrengthsEl.innerHTML = topStrengthsHTML;
+}
+
+// ===== TOP STRENGTHS (FROM DATA) =====
+function renderTopStrengths() {
+    // This is now handled in renderOverview
 }
 
 // ===== HEATMAP SECTION =====
