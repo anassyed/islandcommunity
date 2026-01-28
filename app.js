@@ -181,6 +181,52 @@ function renderHeatmap() {
     Plotly.newPlot('heatmapChart', [trace], layout, {responsive: true});
 }
 
+// ===== FUN TITLE GENERATOR =====
+function getMemberTitle(member) {
+    const scores = categories.map(cat => ({
+        category: cat,
+        score: parseInt(member[cat]) || 0
+    })).sort((a, b) => b.score - a.score);
+    
+    const top1 = scores[0]?.category || '';
+    const top2 = scores[1]?.category || '';
+    const totalPositive = scores.filter(s => s.score > 0).length;
+    
+    // Title based on skill combinations
+    const titleMap = {
+        'Spiritual': { icon: '🕌', titles: ['The Wise Sage', 'The Spiritual Guide', 'The Soul Nurturer'] },
+        'Educational': { icon: '📚', titles: ['The Knowledge Keeper', 'The Mentor', 'The Scholar'] },
+        'Leadership/Strategy': { icon: '👑', titles: ['The Strategist', 'The Captain', 'The Visionary'] },
+        'Social': { icon: '🎉', titles: ['The Connector', 'The Party Planner', 'The Social Butterfly'] },
+        'Community Service': { icon: '🤝', titles: ['The Helper', 'The Volunteer Champion', 'The Community Hero'] },
+        'Outdoor': { icon: '🏕️', titles: ['The Explorer', 'The Adventure Guide', 'The Nature Lover'] },
+        'Kids Activities': { icon: '👶', titles: ['The Youth Champion', 'The Kids Whisperer', 'The Fun Coordinator'] },
+        'Physical/Sports': { icon: '⚽', titles: ['The Athlete', 'The Sports Captain', 'The Fitness Guru'] },
+        'Operational': { icon: '⚙️', titles: ['The Organizer', 'The Operations Chief', 'The Planner'] },
+        'Artisan/Engineer': { icon: '🔧', titles: ['The Builder', 'The Craftsman', 'The Problem Solver'] },
+        'Arts & Culture': { icon: '🎨', titles: ['The Artist', 'The Creative Mind', 'The Culture Keeper'] },
+        'Economy/Resource': { icon: '💰', titles: ['The Treasurer', 'The Resource Manager', 'The Economist'] }
+    };
+
+    // Special combo titles
+    if (top1 === 'Spiritual' && top2 === 'Educational') return { icon: '🌟', title: 'The Enlightened Teacher' };
+    if (top1 === 'Leadership/Strategy' && top2 === 'Social') return { icon: '👔', title: 'The People\'s Leader' };
+    if (top1 === 'Educational' && top2 === 'Spiritual') return { icon: '📖', title: 'The Wisdom Seeker' };
+    if (top1 === 'Outdoor' && top2 === 'Physical/Sports') return { icon: '🏃', title: 'The Action Hero' };
+    if (top1 === 'Social' && top2 === 'Community Service') return { icon: '💝', title: 'The Heart of the Community' };
+    if (top1 === 'Kids Activities' && top2 === 'Social') return { icon: '🎈', title: 'The Family Champion' };
+    if (top1 === 'Leadership/Strategy' && top2 === 'Educational') return { icon: '🎓', title: 'The Master Strategist' };
+    if (top1 === 'Operational' && top2 === 'Leadership/Strategy') return { icon: '📋', title: 'The Chief Organizer' };
+    
+    // Versatile title for well-rounded members
+    if (totalPositive >= 6) return { icon: '🌈', title: 'The All-Rounder' };
+    
+    // Default to top skill title
+    const titleData = titleMap[top1] || { icon: '⭐', titles: ['The Valued Member'] };
+    const randomIndex = member.Name.length % titleData.titles.length;
+    return { icon: titleData.icon, title: titleData.titles[randomIndex] };
+}
+
 // ===== PROFILES SECTION =====
 function renderProfiles() {
     const grid = document.getElementById('profilesGrid');
@@ -201,10 +247,12 @@ function renderProfiles() {
             
             const topSkills = scores.slice(0, 3);
             const chartId = `radar-${index}-${member.Name.replace(/\s+/g, '')}`;
+            const memberTitle = getMemberTitle(member);
             
             return `
                 <div class="profile-card" onclick="showProfile('${member.Name}')">
                     <div class="profile-name">${member.Name}</div>
+                    <div class="profile-title">${memberTitle.icon} ${memberTitle.title}</div>
                     <div class="profile-radar" id="${chartId}"></div>
                     <div class="profile-skills">
                         <strong>Top Skills:</strong>
